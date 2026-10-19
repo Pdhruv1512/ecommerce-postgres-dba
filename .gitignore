@@ -1,2 +1,2 @@
 # Database backups: large and potentially sensitive, never commit
-backups/./scripts/backup.sh
+backups/
