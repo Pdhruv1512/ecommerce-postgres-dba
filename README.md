@@ -6,9 +6,8 @@ Built on the e-commerce dataset from my [SQL analysis project](https://github.co
 
 **Tools:** PostgreSQL 18 · psql · Bash · Git
 
----
 
-## Results at a Glance
+## Results
 
 | Area | What I did | Result |
 |---|---|---|
@@ -17,7 +16,6 @@ Built on the e-commerce dataset from my [SQL analysis project](https://github.co
 | Security | Least-privilege roles for analysts and applications | Unauthorized deletes and edits are blocked |
 | Recovery | Automated backup and restore scripts | Restore verified: **1,004,183 of 1,004,183 rows** recovered |
 
----
 
 ## Database Schema
 
@@ -60,7 +58,6 @@ erDiagram
 - Prices cannot be negative, and quantities must be greater than zero (CHECK constraints)
 - Money is stored as `NUMERIC(10,2)` to avoid floating-point rounding errors
 
----
 
 ## 1. Performance: Indexing
 
@@ -79,7 +76,6 @@ EXPLAIN ANALYZE SELECT * FROM order_items WHERE order_id = 500;
 
 Timings are the steady-state result after repeated runs; the first run was slower (146 ms) because data was not yet cached in memory.
 
----
 
 ## 2. Security: Role-Based Access Control
 
@@ -99,7 +95,6 @@ app_user:     DELETE FROM orders ...     →  ERROR: permission denied for table
 
 *Passwords in `05_roles.sql` are placeholders for local use only; real credentials should never be committed.*
 
----
 
 ## 3. Recovery: Backup & Restore
 
@@ -112,7 +107,6 @@ Note: `pg_dump` backs up a single database but not server-level roles; those wou
 
 Backup files are excluded from Git via `.gitignore`, since in a real system they would contain sensitive customer data.
 
----
 
 ## Project Structure
 
@@ -130,7 +124,6 @@ Backup files are excluded from Git via `.gitignore`, since in a real system they
 └── README.md
 ```
 
----
 
 ## How to Run
 
@@ -153,7 +146,6 @@ chmod +x scripts/*.sh
 ./scripts/restore.sh backups/<backup-file>.dump
 ```
 
----
 
 ## What I Learned
 
