@@ -143,7 +143,11 @@ psql ecommerce -f sql/02_load_data.sql
 psql ecommerce -f sql/03_scale_data.sql   # optional: adds 1M test rows
 psql ecommerce -f sql/04_indexes.sql
 psql ecommerce -f sql/05_roles.sql
+```
 
+`03_scale_data.sql`, `04_indexes.sql`, and `05_roles.sql` are safe to re-run (`ON CONFLICT DO NOTHING`, `IF NOT EXISTS`). `01_schema.sql` drops and rebuilds the tables, so to reload from scratch, run `01` and then `02` again.
+
+```bash
 chmod +x scripts/*.sh
 ./scripts/backup.sh
 ./scripts/restore.sh backups/<backup-file>.dump

@@ -1,8 +1,17 @@
 -- Roles and permissions: least-privilege access for different users.
+-- Safe to re-run: roles are only created if they don't already exist.
 
 -- 1. Create group roles (permission sets, no login)
-CREATE ROLE analyst_role;
-CREATE ROLE app_role;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'analyst_role') THEN
+        CREATE ROLE analyst_role;
+    END IF;
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'app_role') THEN
+        CREATE ROLE app_role;
+    END IF;
+END
+$$;
 
 -- 2. Analyst: read-only access to all tables
 GRANT CONNECT ON DATABASE ecommerce TO analyst_role;
@@ -17,5 +26,13 @@ GRANT INSERT, UPDATE ON orders, order_items TO app_role;
 
 -- 4. Create login users and add them to the roles
 -- NOTE: placeholder passwords for a local demo. Never commit real passwords to GitHub.
-CREATE ROLE analyst_user LOGIN PASSWORD 'change_me' IN ROLE analyst_role;
-CREATE ROLE app_user     LOGIN PASSWORD 'change_me' IN ROLE app_role;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'analyst_user') THEN
+        CREATE ROLE analyst_user LOGIN PASSWORD 'change_me' IN ROLE analyst_role;
+    END IF;
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'app_user') THEN
+        CREATE ROLE app_user LOGIN PASSWORD 'change_me' IN ROLE app_role;
+    END IF;
+END
+$$;
